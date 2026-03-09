@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changa Content Co. — Africa's SME Content Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ── RESET & VARIABLES ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0A0F1E;
+    --navy2: #111827;
+    --gold: #F5A623;
+    --gold2: #FFD166;
+    --cream: #FAF7F2;
+    --white: #FFFFFF;
+    --gray: #6B7280;
+    --light: #F3F4F6;
+    --accent: #1E40AF;
+    --green: #10B981;
+    --red: #EF4444;
+    --card-bg: #161D2F;
+    --border: rgba(245,166,35,0.2);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-follower {
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(245,166,35,0.5);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  }
+  .cursor-follower.hovering {
+    width: 60px; height: 60px;
+    border-color: var(--gold);
+    background: rgba(245,166,35,0.05);
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(10,15,30,0.92);
+    backdrop-filter: blur(20px);
+    padding: 16px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--navy) !important;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s !important;
+    display: inline-block;
+  }
+  .nav-cta:hover {
+    background: var(--gold2) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(245,166,35,0.35);
+  }
+  .nav-cta::after { display: none !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+    animation: glowPulse 6s ease-in-out infinite;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(30,64,175,0.2) 0%, transparent 70%);
+    bottom: 0; left: 200px;
+    pointer-events: none;
+    animation: glowPulse 8s ease-in-out infinite reverse;
+  }
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    opacity: 0; animation: fadeUp 0.9s 0.35s forwards;
+  }
+  .hero-headline .line2 { color: var(--gold); display: block; }
+  .hero-headline .line3 {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    color: transparent; display: block;
+  }
+
+  .hero-sub {
+    margin-top: 40px;
+    max-width: 520px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.65);
+    opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-actions {
+    margin-top: 48px;
+    display: flex; align-items: center; gap: 24px;
+    flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 16px 36px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245,166,35,0.4); }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-secondary {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: color 0.3s, gap 0.3s;
+  }
+  .btn-secondary:hover { color: var(--white); gap: 14px; }
+  .btn-arrow { font-size: 1.1rem; }
+
+  .hero-stats {
+    margin-top: 80px;
+    display: flex; gap: 60px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.75rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3); text-transform: uppercase;
+    opacity: 0; animation: fadeUp 0.9s 1s forwards;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: rgba(255,255,255,0.2);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: var(--gold);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0% { left: -100%; } 100% { left: 100%; }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-section {
+    padding: 20px 0;
+    background: var(--gold);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 20px;
+    flex-shrink: 0;
+  }
+  .marquee-dot {
+    width: 5px; height: 5px;
+    background: var(--navy);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  .section-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .about-left { }
+  .about-desc {
+    margin-top: 28px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+  }
+  .about-desc strong { color: var(--white); font-weight: 500; }
+
+  .about-tags {
+    margin-top: 32px;
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .tag {
+    border: 1px solid var(--border);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    padding: 6px 16px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+    transition: all 0.3s;
+  }
+  .tag:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(245,166,35,0.05);
+  }
+
+  .about-right {
+    position: relative;
+  }
+  .about-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .about-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border);
+  }
+  .about-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .about-card-icon {
+    font-size: 2rem; margin-bottom: 16px;
+  }
+  .about-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .about-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .about-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .about-card.full { grid-column: 1 / -1; }
+
+  /* ── SERVICES ── */
+  #services {
+    padding: 120px 60px;
+    background: linear-gradient(180deg, transparent, rgba(245,166,35,0.03), transparent);
+  }
+  .services-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 70px;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .service-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: none;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(245,166,35,0.06), transparent);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .service-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(245,166,35,0.25);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+  .service-card:hover::after { opacity: 1; }
+  .service-card:hover .service-num { color: var(--gold); }
+
+  .service-num {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.3s;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .service-icon {
+    width: 52px; height: 52px;
+    background: rgba(245,166,35,0.1);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .service-card:hover .service-icon {
+    background: rgba(245,166,35,0.2);
+    transform: scale(1.05);
+  }
+  .service-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .service-card p {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-bottom: 28px;
+  }
+  .service-features {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .service-features li {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .service-features li::before {
+    content: '';
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%; flex-shrink: 0;
+  }
+  .service-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 28px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s;
+  }
+  .service-card:hover .service-link { opacity: 1; transform: translateY(0); }
+
+  /* ── PROCESS ── */
+  #process {
+    padding: 120px 60px;
+  }
+  .process-grid {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-grid::before {
+    content: '';
+    position: absolute;
+    top: 36px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), var(--border), var(--border), transparent);
+  }
+  .process-step {
+    padding: 0 24px;
+    text-align: center;
+    position: relative;
+  }
+  .process-num {
+    width: 72px; height: 72px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin: 0 auto 28px;
+    background: var(--navy);
+    transition: all 0.3s;
+    position: relative; z-index: 1;
+  }
+  .process-step:hover .process-num {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+    box-shadow: 0 0 32px rgba(245,166,35,0.4);
+  }
+  .process-step h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .process-step p {
+    font-size: 0.83rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+  }
+
+  /* ── WORK / CASE STUDIES ── */
+  #work {
+    padding: 120px 60px;
+    background: rgba(255,255,255,0.01);
+  }
+  .work-header { margin-bottom: 70px; }
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .work-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: none;
+  }
+  .work-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .work-card-visual {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .work-card-visual .bg-pattern {
+    position: absolute; inset: 0;
+    opacity: 0.6;
+    transition: transform 0.6s;
+  }
+  .work-card:hover .bg-pattern { transform: scale(1.05); }
+  .wc1 .bg-pattern { background: linear-gradient(135deg, #1E3A5F, #0A1628); }
+  .wc2 .bg-pattern { background: linear-gradient(135deg, #1A2E1A, #0A1A0A); }
+  .wc3 .bg-pattern { background: linear-gradient(135deg, #3A1A2E, #1A0A14); }
+  .wc4 .bg-pattern { background: linear-gradient(135deg, #2E2A1A, #1A160A); }
+
+  .work-card-visual-content {
+    position: relative; z-index: 1;
+    text-align: center;
+  }
+  .work-card-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .work-card-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(245,166,35,0.15);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(245,166,35,0.2);
+  }
+  .work-card-body { padding: 28px 32px 32px; }
+  .work-card-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .work-card-body p {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .work-metrics {
+    display: flex; gap: 24px;
+  }
+  .metric { }
+  .metric-val {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .metric-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── PLAYBOOK ── */
+  #playbook {
+    padding: 120px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .playbook-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(245,166,35,0.04), transparent 60%);
+    pointer-events: none;
+  }
+  .playbook-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px; align-items: center;
+  }
+  .playbook-entries {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .playbook-entry {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 24px 28px;
+    display: flex; align-items: center; gap: 20px;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .playbook-entry:hover {
+    border-color: var(--border);
+    background: rgba(22,29,47,0.8);
+    transform: translateX(6px);
+  }
+  .entry-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(245,166,35,0.2);
+    min-width: 40px;
+    transition: color 0.3s;
+  }
+  .playbook-entry:hover .entry-num { color: var(--gold); }
+  .entry-content h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .entry-content p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+  }
+  .entry-tag {
+    margin-left: auto;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(16,185,129,0.08);
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(16,185,129,0.2);
+    flex-shrink: 0;
+  }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials {
+    padding: 120px 60px;
+    background: rgba(255,255,255,0.01);
+  }
+  .testimonials-grid {
+    margin-top: 70px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .testimonial-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 36px;
+    transition: all 0.4s;
+    position: relative;
+  }
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border);
+  }
+  .testimonial-card::before {
+    content: '"';
+    position: absolute; top: 20px; right: 28px;
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: rgba(245,166,35,0.08);
+    line-height: 1;
+    font-weight: 800;
+  }
+  .testimonial-stars {
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .testimonial-text {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .author-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .av1 { background: linear-gradient(135deg, #F5A623, #FF6B6B); color: #fff; }
+  .av2 { background: linear-gradient(135deg, #10B981, #1E40AF); color: #fff; }
+  .av3 { background: linear-gradient(135deg, #7C3AED, #F5A623); color: #fff; }
+  .author-name {
+    font-size: 0.875rem; font-weight: 600; margin-bottom: 2px;
+  }
+  .author-biz {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CONTACT / CTA ── */
+  #contact {
+    padding: 140px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,166,35,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-inner { position: relative; max-width: 700px; margin: 0 auto; }
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .contact-title span { color: var(--gold); }
+  .contact-desc {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+  .contact-options {
+    display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+  }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+  }
+  .contact-link:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.2);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+  .contact-link.primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .contact-link.primary:hover {
+    background: var(--gold2);
+    border-color: var(--gold2);
+    box-shadow: 0 12px 32px rgba(245,166,35,0.35);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.04em;
+  }
+  .footer-socials { display: flex; gap: 16px; }
+  .footer-socials a {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .footer-socials a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(245,166,35,0.05);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── MOBILE NAV TOGGLE ── */
+  .nav-toggle { display: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 20px 32px; }
+    nav.scrolled { padding: 14px 32px; }
+    #hero { padding: 120px 32px 80px; }
+    #about { padding: 80px 32px; gap: 60px; }
+    #services { padding: 80px 32px; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    #process { padding: 80px 32px; }
+    .process-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .process-grid::before { display: none; }
+    #work { padding: 80px 32px; }
+    #playbook { padding: 80px 32px; }
+    .playbook-inner { grid-template-columns: 1fr; gap: 48px; }
+    #testimonials { padding: 80px 32px; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; }
+    #contact { padding: 100px 32px; }
+    footer { padding: 32px; }
+  }
+
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor, .cursor-follower { display: none; }
+    .nav-links { display: none; }
+    .nav-toggle {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+    #about { grid-template-columns: 1fr; gap: 48px; }
+    .about-cards-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .work-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 36px; }
+  }
+
+  /* ── FLOATING BADGE ── */
+  .float-badge {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    background: var(--gold);
+    color: var(--navy);
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    z-index: 90;
+    box-shadow: 0 8px 24px rgba(245,166,35,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: none;
+    text-decoration: none;
+    animation: floatBadge 3s ease-in-out infinite;
+  }
+  .float-badge:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 16px 40px rgba(245,166,35,0.5);
+  }
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<!-- Float badge -->
+<a href="#contact" class="float-badge" title="Let's Talk">💬</a>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Changa<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#playbook">Playbook</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-eyebrow">🇿🇲 Lusaka, Zambia — Africa's Content Agency</div>
+
+  <h1 class="hero-headline">
+    We Make Your<br>
+    <span class="line2">Business</span>
+    <span class="line3">Impossible to Ignore.</span>
+  </h1>
+
+  <p class="hero-sub">
+    Social media management and product copywriting built specifically for African SMEs and global brands entering the African market. We turn attention into customers.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">
+      See Our Services <span class="btn-arrow">→</span>
+    </a>
+    <a href="#work" class="btn-secondary">
+      View Our Work <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">SMEs Studied</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1K+</div>
+      <div class="stat-label">Comments Generated</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Playbook Entries</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">African Markets</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <!-- doubled for seamless loop -->
+    <span class="marquee-item">Social Media Management <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Product Copywriting <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Zambia Growth Playbook <span class="marquee-dot"></span></span>
+    <span class="marquee-item">African Markets <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Borrowed Attention Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Content That Converts <span class="marquee-dot"></span></span>
+    <span class="marquee-item">SME Growth <span class="marquee-dot"></span></span>
+    <span class="marquee-item">WhatsApp Funnels <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Social Media Management <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Product Copywriting <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Zambia Growth Playbook <span class="marquee-dot"></span></span>
+    <span class="marquee-item">African Markets <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Borrowed Attention Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Content That Converts <span class="marquee-dot"></span></span>
+    <span class="marquee-item">SME Growth <span class="marquee-dot"></span></span>
+    <span class="marquee-item">WhatsApp Funnels <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-left reveal">
+    <div class="section-eyebrow">Who We Are</div>
+    <h2 class="section-title">Built for African<br>Businesses, By<br>One of Their Own.</h2>
+    <p class="about-desc reveal reveal-delay-1">
+      Most global agencies know nothing about how Zambians use Facebook, what makes an African consumer stop scrolling, or why a simple question outperforms a flyer every time.
+      <br><br>
+      <strong>We do.</strong> Changa Content Co. was built from the ground up in Lusaka — and everything we create is informed by deep knowledge of African consumer culture, local platform behaviour, and what actually drives sales for small businesses.
+    </p>
+    <div class="about-tags reveal reveal-delay-2">
+      <span class="tag">🇿🇲 Zambia-Based</span>
+      <span class="tag">🌍 Pan-African Strategy</span>
+      <span class="tag">✍️ Product Copywriting</span>
+      <span class="tag">📱 Social Media</span>
+      <span class="tag">📊 Content Strategy</span>
+      <span class="tag">🛒 E-Commerce</span>
+    </div>
+  </div>
+
+  <div class="about-right reveal reveal-delay-2">
+    <div class="about-cards-grid">
+      <div class="about-card full">
+        <div class="about-card-icon">🎯</div>
+        <h3>The Full-Funnel Difference</h3>
+        <p>Most agencies get you attention OR conversions. We connect both. Your social media attracts the right people. Your product copy turns them into buyers. No gap, no wasted clicks.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🧠</div>
+        <h3>African Consumer Insight</h3>
+        <p>We study how African audiences actually behave online — from meme culture to sports hooks — and we build strategies around it.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📈</div>
+        <h3>Results-First Thinking</h3>
+        <p>Every piece of content we create has one goal: to move your business forward. Reach, engagement, and sales — not vanity metrics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-eyebrow">What We Do</div>
+      <h2 class="section-title">Two Services.<br>One Goal: Growth.</h2>
+    </div>
+    <a href="#contact" class="btn-primary">Start a Project →</a>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-num">01</span>
+      <div class="service-icon">📱</div>
+      <h3>Social Media Management</h3>
+      <p>We run your social media pages using strategies built for African audiences — not copied from a Western playbook that doesn't work here.</p>
+      <ul class="service-features">
+        <li>Content strategy and planning</li>
+        <li>Post creation and scheduling</li>
+        <li>Engagement and community management</li>
+        <li>Borrowed attention content formats</li>
+        <li>Monthly performance reports</li>
+        <li>Facebook, Instagram, WhatsApp</li>
+      </ul>
+      <a href="#contact" class="service-link">Get Started →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-1">
+      <span class="service-num">02</span>
+      <div class="service-icon">✍️</div>
+      <h3>Product Copywriting</h3>
+      <p>Words that make people want to buy. We transform boring product listings into compelling descriptions that convert browsers into customers.</p>
+      <ul class="service-features">
+        <li>Product descriptions that convert</li>
+        <li>SEO-friendly e-commerce copy</li>
+        <li>Brand voice development</li>
+        <li>Catalogue and menu copywriting</li>
+        <li>Website copy and landing pages</li>
+        <li>Before/after rewrites available</li>
+      </ul>
+      <a href="#contact" class="service-link">Get Started →</a>
+    </div>
+
+    <div class="service-card reveal reveal-delay-2">
+      <span class="service-num">03</span>
+      <div class="service-icon">🌍</div>
+      <h3>Market Entry Package</h3>
+      <p>For global brands entering Africa. We localise your content, translate your brand voice for African consumers, and build your presence from day one.</p>
+      <ul class="service-features">
+        <li>African consumer insights report</li>
+        <li>Full social media strategy</li>
+        <li>Localised product copy</li>
+        <li>Platform-specific content</li>
+        <li>Cultural adaptation consulting</li>
+        <li>Ongoing content management</li>
+      </ul>
+      <a href="#contact" class="service-link">Get Started →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="reveal" style="text-align:center; max-width: 600px; margin: 0 auto 0;">
+    <div class="section-eyebrow" style="justify-content:center;">How It Works</div>
+    <h2 class="section-title">From First Call to<br>First Results</h2>
+  </div>
+
+  <div class="process-grid">
+    <div class="process-step reveal">
+      <div class="process-num">01</div>
+      <h3>Discovery Call</h3>
+      <p>We learn your business, your audience, your goals, and what's not working right now.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-num">02</div>
+      <h3>Strategy Build</h3>
+      <p>We build a content plan tailored to your market, your platform, and your audience's behaviour.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-num">03</div>
+      <h3>Content Creation</h3>
+      <p>We create posts, copy, and campaigns — every piece designed to attract attention and drive action.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="process-num">04</div>
+      <h3>Measure & Grow</h3>
+      <p>We track what works, report clearly, and continuously optimise for better results every month.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ── -->
+<section id="work">
+  <div class="work-header reveal">
+    <div class="section-eyebrow">Case Studies</div>
+    <h2 class="section-title">Strategies That Actually<br>Worked in Zambia.</h2>
+  </div>
+
+  <div class="work-grid">
+    <div class="work-card wc1 reveal">
+      <div class="work-card-visual">
+        <div class="bg-pattern"></div>
+        <div class="work-card-visual-content">
+          <div class="work-card-icon">📱</div>
+          <span class="work-card-tag">Retail Tech</span>
+        </div>
+      </div>
+      <div class="work-card-body">
+        <h3>Mobile City — The 1K Comment Strategy</h3>
+        <p>Analysed how Lusaka's top phone retailer generates thousands of comments per post using borrowed attention formats — sports hooks, simple questions, and challenge prompts.</p>
+        <div class="work-metrics">
+          <div class="metric">
+            <div class="metric-val">1,000+</div>
+            <div class="metric-label">Comments/Post</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">3x</div>
+            <div class="metric-label">Reach Increase</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">0</div>
+            <div class="metric-label">Ad Spend</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card wc2 reveal reveal-delay-1">
+      <div class="work-card-visual">
+        <div class="bg-pattern"></div>
+        <div class="work-card-visual-content">
+          <div class="work-card-icon">🛍️</div>
+          <span class="work-card-tag">Fashion Retail</span>
+        </div>
+      </div>
+      <div class="work-card-body">
+        <h3>Lusaka Boutique — From Flyers to Followers</h3>
+        <p>Replaced static flyer posts with engagement-first content formats. Added product descriptions that matched the visual appeal of their clothing line.</p>
+        <div class="work-metrics">
+          <div class="metric">
+            <div class="metric-val">500→5K</div>
+            <div class="metric-label">Followers</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">90</div>
+            <div class="metric-label">Days</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">No Ads</div>
+            <div class="metric-label">Organic Only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card wc3 reveal reveal-delay-2">
+      <div class="work-card-visual">
+        <div class="bg-pattern"></div>
+        <div class="work-card-visual-content">
+          <div class="work-card-icon">🍽️</div>
+          <span class="work-card-tag">Food & Beverage</span>
+        </div>
+      </div>
+      <div class="work-card-body">
+        <h3>Restaurant — Full Tables Every Weekend</h3>
+        <p>Combined menu copywriting with Facebook content strategy to drive consistent weekend bookings without a single kwacha spent on advertising.</p>
+        <div class="work-metrics">
+          <div class="metric">
+            <div class="metric-val">10→Full</div>
+            <div class="metric-label">Weekly Walk-ins</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">K0</div>
+            <div class="metric-label">Ad Budget</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">4 Weeks</div>
+            <div class="metric-label">To Results</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card wc4 reveal reveal-delay-3">
+      <div class="work-card-visual">
+        <div class="bg-pattern"></div>
+        <div class="work-card-visual-content">
+          <div class="work-card-icon">⚖️</div>
+          <span class="work-card-tag">Professional Services</span>
+        </div>
+      </div>
+      <div class="work-card-body">
+        <h3>Accounting Firm — 10 Leads From One Post</h3>
+        <p>Transformed a "boring" B2B services page into an engagement machine using relatable pain-point content and a clear WhatsApp conversion funnel.</p>
+        <div class="work-metrics">
+          <div class="metric">
+            <div class="metric-val">10</div>
+            <div class="metric-label">New Leads</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">1</div>
+            <div class="metric-label">Post</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">B2B</div>
+            <div class="metric-label">Market</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PLAYBOOK ── -->
+<section id="playbook">
+  <div class="playbook-bg"></div>
+  <div class="playbook-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">The Playbook</div>
+      <h2 class="section-title">Zambia Growth<br>Playbook</h2>
+      <p style="margin-top:24px; font-size:1rem; line-height:1.75; color:rgba(255,255,255,0.55); font-weight:300; max-width:420px;">
+        A living series documenting what actually works on Zambian and African social media — written for SME owners who are tired of strategies that don't fit their market.
+      </p>
+      <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="btn-primary" style="margin-top:36px; display:inline-flex;">
+        Follow on LinkedIn →
+      </a>
+    </div>
+
+    <div class="playbook-entries reveal reveal-delay-1">
+      <div class="playbook-entry">
+        <div class="entry-num">01</div>
+        <div class="entry-content">
+          <h4>Why Simple Questions Beat Flyers Every Time</h4>
+          <p>The psychology behind engagement-first content on Zambian Facebook</p>
+        </div>
+        <span class="entry-tag">Live</span>
+      </div>
+      <div class="playbook-entry">
+        <div class="entry-num">02</div>
+        <div class="entry-content">
+          <h4>The Sports Comment Engine</h4>
+          <p>How to borrow attention from football to fuel your business page</p>
+        </div>
+        <span class="entry-tag">Live</span>
+      </div>
+      <div class="playbook-entry">
+        <div class="entry-num">03</div>
+        <div class="entry-content">
+          <h4>Mobile City's 1K Comment Strategy Decoded</h4>
+          <p>Breaking down the exact formats driving Zambia's top retail page</p>
+        </div>
+        <span class="entry-tag">Live</span>
+      </div>
+      <div class="playbook-entry">
+        <div class="entry-num">04</div>
+        <div class="entry-content">
+          <h4>Borrowed Attention vs Direct Promotion</h4>
+          <p>Which strategy actually works for Zambian SMEs right now</p>
+        </div>
+        <span class="entry-tag">Live</span>
+      </div>
+      <div class="playbook-entry">
+        <div class="entry-num">05</div>
+        <div class="entry-content">
+          <h4>The WhatsApp Funnel — Turn Comments into Customers</h4>
+          <p>How to convert Facebook reach into real sales via WhatsApp</p>
+        </div>
+        <span class="entry-tag">Live</span>
+      </div>
+      <div class="playbook-entry">
+        <div class="entry-num">06</div>
+        <div class="entry-content">
+          <h4>The 3 Posts Every Zambian Business Needs Weekly</h4>
+          <p>A simple non-negotiable content mix for sustainable page growth</p>
+        </div>
+        <span class="entry-tag">Coming</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="reveal" style="text-align:center; max-width:560px; margin:0 auto 0;">
+    <div class="section-eyebrow" style="justify-content:center;">What Clients Say</div>
+    <h2 class="section-title">Results Speak<br>for Themselves.</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"Before working with Changa, our Facebook page had 200 followers and zero engagement. Within 6 weeks we had real customers messaging us from our posts. The strategy actually fits how Zambians use social media."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av1">TM</div>
+        <div>
+          <div class="author-name">Thandeka Mwanza</div>
+          <div class="author-biz">Owner, Lusaka Fashion Boutique</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-1">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"Our product descriptions used to just list features. Now they actually tell a story. Our WhatsApp enquiries doubled in the first month after the rewrite. Honestly didn't expect that kind of difference from copy alone."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av2">CK</div>
+        <div>
+          <div class="author-name">Chisomo Kamwendo</div>
+          <div class="author-biz">Founder, Zambian Skincare Brand</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal reveal-delay-2">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"We're a services firm — we thought social media wasn't really for us. One strategy session changed our mind completely. The post formats they suggested drove 10 genuine leads in two weeks. We're now on a full retainer."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av3">BN</div>
+        <div>
+          <div class="author-name">Bwalya Nkonde</div>
+          <div class="author-biz">Director, Professional Services Firm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner reveal">
+    <div class="section-eyebrow" style="justify-content:center;">Let's Work Together</div>
+    <h2 class="contact-title">Ready to Get<br><span>Seen & Sold?</span></h2>
+    <p class="contact-desc">Whether you're a Lusaka SME, an African e-commerce brand, or a global company entering the African market — let's build something that actually works.</p>
+    <div class="contact-options">
+      <a href="mailto:hello@changacontent.co" class="contact-link primary">📧 Email Us</a>
+      <a href="https://wa.me/260XXXXXXXXX" target="_blank" class="contact-link">💬 WhatsApp</a>
+      <a href="https://www.linkedin.com/in/yourprofile" target="_blank" class="contact-link">in LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">Changa<span>.</span></div>
+  <div class="footer-copy">© 2025 Changa Content Co. — Lusaka, Zambia 🇿🇲</div>
+  <div class="footer-socials">
+    <a href="#" title="LinkedIn">in</a>
+    <a href="#" title="Facebook">f</a>
+    <a href="#" title="Instagram">ig</a>
+  </div>
+</footer>
+
+<script>
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const follower = document.getElementById('cursorFollower');
+  let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.transform = `translate(${mouseX - 6}px, ${mouseY - 6}px)`;
+  });
+
+  function animateFollower() {
+    followerX += (mouseX - followerX - 18) * 0.12;
+    followerY += (mouseY - followerY - 18) * 0.12;
+    follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+    requestAnimationFrame(animateFollower);
+  }
+  animateFollower();
+
+  document.querySelectorAll('a, button, .service-card, .work-card, .playbook-entry, .about-card').forEach(el => {
+    el.addEventListener('mouseenter', () => follower.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => follower.classList.remove('hovering'));
+  });
+
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // ── REVEAL ON SCROLL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ── SMOOTH ANCHOR SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── COUNT UP ANIMATION ──
+  function countUp(el, target, suffix = '', duration = 1800) {
+    const isDecimal = target % 1 !== 0;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = (isDecimal ? start.toFixed(1) : Math.floor(start)) + suffix;
+    }, 16);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.stat-num').forEach(num => {
+          const text = num.textContent;
+          const match = text.match(/^([\d.]+)(.*)$/);
+          if (match) countUp(num, parseFloat(match[1]), match[2]);
+        });
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) statsObserver.observe(heroStats);
+
+  // ── PARALLAX GLOW ──
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    document.querySelectorAll('.hero-glow').forEach(g => {
+      g.style.transform = `translateY(${scrollY * 0.2}px)`;
+    });
+  });
+</script>
+</body>
+</html>
